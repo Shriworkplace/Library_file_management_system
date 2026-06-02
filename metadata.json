@@ -1,0 +1,8 @@
+{
+  "name": "BooksAbove",
+  "description": "Smart academic support hub combining advanced library management, personalized book recommendations, and interactive skill learning roadmaps.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

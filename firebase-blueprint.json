@@ -1,0 +1,283 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile document",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "email": { "type": "string", "description": "Email address" },
+        "firstName": { "type": "string", "description": "First name" },
+        "lastName": { "type": "string", "description": "Last name" },
+        "role": { "type": "string", "enum": ["student", "librarian", "admin"] },
+        "studentId": { "type": "string", "description": "University Student ID" },
+        "department": { "type": "string", "description": "Department name" },
+        "semester": { "type": "number", "description": "Academic semester" },
+        "status": { "type": "string", "enum": ["active", "graduated", "suspended"] },
+        "interests": { "type": "array", "description": "List of user interest tags" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "firstName", "lastName", "role", "status", "createdAt", "updatedAt"]
+    },
+    "Book": {
+      "title": "Book",
+      "description": "Library book metadata",
+      "type": "object",
+      "properties": {
+        "bookId": { "type": "string", "description": "Book ID" },
+        "isbn": { "type": "string", "description": "ISBN code" },
+        "title": { "type": "string", "description": "Book title" },
+        "author": { "type": "array", "description": "Authors of the book" },
+        "publisher": { "type": "string" },
+        "publicationYear": { "type": "number" },
+        "description": { "type": "string" },
+        "genre": { "type": "array" },
+        "subjectTags": { "type": "array" },
+        "coverImageUrl": { "type": "string" },
+        "totalCopies": { "type": "number" },
+        "availableCopies": { "type": "number" },
+        "averageRating": { "type": "number" },
+        "ratingCount": { "type": "number" },
+        "circulationCount": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["bookId", "isbn", "title", "author", "genre", "totalCopies", "availableCopies", "createdAt", "updatedAt"]
+    },
+    "BookCopy": {
+      "title": "BookCopy",
+      "description": "Physical copy of a book",
+      "type": "object",
+      "properties": {
+        "copyId": { "type": "string" },
+        "bookId": { "type": "string" },
+        "barcode": { "type": "string" },
+        "location": { "type": "string", "description": "Shelf location" },
+        "condition": { "type": "string", "enum": ["excellent", "good", "fair", "poor", "missing"] },
+        "status": { "type": "string", "enum": ["available", "issued", "reserved", "damaged", "lost"] },
+        "currentIssueId": { "type": "string" }
+      },
+      "required": ["copyId", "bookId", "barcode", "condition", "status"]
+    },
+    "Issue": {
+      "title": "Issue",
+      "description": "Book checkout transaction",
+      "type": "object",
+      "properties": {
+        "issueId": { "type": "string" },
+        "studentId": { "type": "string" },
+        "bookId": { "type": "string" },
+        "copyId": { "type": "string" },
+        "issueDate": { "type": "string", "format": "date-time" },
+        "dueDate": { "type": "string", "format": "date-time" },
+        "returnDate": { "type": "string", "format": "date-time" },
+        "renewalCount": { "type": "number" },
+        "fineAmount": { "type": "number" },
+        "status": { "type": "string", "enum": ["active", "returned", "overdue", "lost"] },
+        "approvedBy": { "type": "string" }
+      },
+      "required": ["issueId", "studentId", "bookId", "copyId", "issueDate", "dueDate", "status"]
+    },
+    "IssueRequest": {
+      "title": "IssueRequest",
+      "description": "Issue requests pending approval",
+      "type": "object",
+      "properties": {
+        "requestId": { "type": "string" },
+        "studentId": { "type": "string" },
+        "bookId": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected", "auto_approved"] },
+        "requestDate": { "type": "string", "format": "date-time" },
+        "rejectionReason": { "type": "string" }
+      },
+      "required": ["requestId", "studentId", "bookId", "status", "requestDate"]
+    },
+    "Reservation": {
+      "title": "Reservation",
+      "description": "Book reserves when copies are out",
+      "type": "object",
+      "properties": {
+        "reservationId": { "type": "string" },
+        "studentId": { "type": "string" },
+        "bookId": { "type": "string" },
+        "reservationDate": { "type": "string", "format": "date-time" },
+        "holdUntilDate": { "type": "string", "format": "date-time" },
+        "position": { "type": "number" },
+        "status": { "type": "string", "enum": ["active", "notified", "issued", "expired", "cancelled"] }
+      },
+      "required": ["reservationId", "studentId", "bookId", "reservationDate", "status"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "Rating and review",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "bookId": { "type": "string" },
+        "rating": { "type": "number" },
+        "reviewText": { "type": "string" },
+        "isAnonymous": { "type": "boolean" },
+        "userName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "bookId", "rating", "createdAt"]
+    },
+    "ReadingList": {
+      "title": "ReadingList",
+      "description": "Student book lists",
+      "type": "object",
+      "properties": {
+        "listId": { "type": "string" },
+        "studentId": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "isPublic": { "type": "boolean" },
+        "books": { "type": "array" }
+      },
+      "required": ["listId", "studentId", "name", "books"]
+    },
+    "SkillRoadmap": {
+      "title": "SkillRoadmap",
+      "description": "Skill learning roadmap",
+      "type": "object",
+      "properties": {
+        "skillId": { "type": "string" },
+        "name": { "type": "string" },
+        "skillName": { "type": "string" },
+        "description": { "type": "string" },
+        "stages": { "type": "array" },
+        "isActive": { "type": "boolean" }
+      },
+      "required": ["skillId", "name", "skillName", "stages", "isActive"]
+    },
+    "StudentRoadmapProgress": {
+      "title": "StudentRoadmapProgress",
+      "description": "Student progress tracking",
+      "type": "object",
+      "properties": {
+        "progressId": { "type": "string" },
+        "studentId": { "type": "string" },
+        "roadmapId": { "type": "string" },
+        "status": { "type": "string", "enum": ["not_started", "in_progress", "completed"] },
+        "startDate": { "type": "string", "format": "date-time" },
+        "completionDate": { "type": "string", "format": "date-time" },
+        "pace": { "type": "string", "enum": ["slow", "medium", "fast"] },
+        "milestoneProgress": { "type": "array" },
+        "totalHoursLogged": { "type": "number" },
+        "progressPercentage": { "type": "number" }
+      },
+      "required": ["progressId", "studentId", "roadmapId", "status", "startDate", "milestoneProgress"]
+    },
+    "Resource": {
+      "title": "Resource",
+      "description": "Curated resource database",
+      "type": "object",
+      "properties": {
+        "resourceId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "url": { "type": "string" },
+        "type": { "type": "string", "enum": ["video", "article", "course", "documentation", "practice", "project"] },
+        "skills": { "type": "array" },
+        "difficulty": { "type": "string", "enum": ["beginner", "intermediate", "advanced"] },
+        "provider": { "type": "string" },
+        "isPaid": { "type": "boolean" },
+        "rating": { "type": "number" },
+        "upvoteCount": { "type": "number" },
+        "downvoteCount": { "type": "number" },
+        "isCurated": { "type": "boolean" }
+      },
+      "required": ["resourceId", "title", "url", "type", "skills", "difficulty", "provider", "isPaid"]
+    },
+    "Fine": {
+      "title": "Fine",
+      "description": "Fine details",
+      "type": "object",
+      "properties": {
+        "fineId": { "type": "string" },
+        "studentId": { "type": "string" },
+        "issueId": { "type": "string" },
+        "amount": { "type": "number" },
+        "reason": { "type": "string" },
+        "status": { "type": "string", "enum": ["due", "paid", "waived"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["fineId", "studentId", "amount", "reason", "status", "createdAt"]
+    },
+    "ResearchPaper": {
+      "title": "ResearchPaper",
+      "description": "Scholarly research papers",
+      "type": "object",
+      "properties": {
+        "paperId": { "type": "string" },
+        "title": { "type": "string" },
+        "authors": { "type": "array" },
+        "abstract": { "type": "string" },
+        "publishedYear": { "type": "number" },
+        "journal": { "type": "string" },
+        "doi": { "type": "string" },
+        "pdfUrl": { "type": "string" },
+        "subjectTags": { "type": "array" },
+        "downloadsCount": { "type": "number" },
+        "addedBy": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["paperId", "title", "authors", "abstract", "publishedYear", "journal", "pdfUrl", "subjectTags", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/researchPapers/{paperId}": {
+      "schema": "ResearchPaper",
+      "description": "Repositories of academic research papers"
+    },
+    "/users/{uid}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/books/{bookId}": {
+      "schema": "Book",
+      "description": "Book collection"
+    },
+    "/bookCopies/{copyId}": {
+      "schema": "BookCopy",
+      "description": "Physical book copies"
+    },
+    "/issues/{issueId}": {
+      "schema": "Issue",
+      "description": "Issued books tracking"
+    },
+    "/issueRequests/{requestId}": {
+      "schema": "IssueRequest",
+      "description": "Requests to check out books"
+    },
+    "/reservations/{reservationId}": {
+      "schema": "Reservation",
+      "description": "Book reservations queue"
+    },
+    "/books/{bookId}/reviews/{userId}": {
+      "schema": "Review",
+      "description": "Book ratings and reviews"
+    },
+    "/readingLists/{listId}": {
+      "schema": "ReadingList",
+      "description": "Reading lists for students"
+    },
+    "/skillRoadmaps/{skillId}": {
+      "schema": "SkillRoadmap",
+      "description": "Interactive learning roadmaps"
+    },
+    "/studentRoadmapProgress/{progressId}": {
+      "schema": "StudentRoadmapProgress",
+      "description": "Tracking progress of students in roadmaps"
+    },
+    "/resources/{resourceId}": {
+      "schema": "Resource",
+      "description": "Free curated developer resources"
+    },
+    "/fines/{fineId}": {
+      "schema": "Fine",
+      "description": "Fines accrued by students"
+    }
+  }
+}
