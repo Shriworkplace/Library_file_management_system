@@ -18,3 +18,7 @@ View your app in AI Studio: https://ai.studio/apps/9375629d-6a65-4342-a9e7-5b626
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+
+
+
+   This is my First hackthon project so check it tell me how it is
